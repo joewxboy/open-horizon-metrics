@@ -1,0 +1,34 @@
+{
+  "type": "datasource",
+  "name": "Open Horizon Metrics",
+  "id": "openhorizon-metrics",
+  "metrics": true,
+  "info": {
+    "description": "Open Horizon Metrics data source for Grafana",
+    "author": {
+      "name": "Open Horizon Team"
+    },
+    "keywords": ["openhorizon", "metrics"],
+    "logos": {
+      "small": "img/logo.svg",
+      "large": "img/logo.svg"
+    },
+    "links": [
+      {
+        "name": "Website",
+        "url": "https://github.com/open-horizon/open-horizon-metrics"
+      },
+      {
+        "name": "License",
+        "url": "https://github.com/open-horizon/open-horizon-metrics/blob/main/LICENSE"
+      }
+    ],
+    "screenshots": [],
+    "version": "1.0.0",
+    "updated": "2024-03-19"
+  },
+  "dependencies": {
+    "Grafana": ">=9.0.0",
+    "Plugins": []
+  }
+} 

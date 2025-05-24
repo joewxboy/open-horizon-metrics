@@ -1,120 +1,88 @@
-# Project Planning and Execution Document
+# Open Horizon Metrics Project
 
 ## Background and Motivation
-This project aims to create a metrics collection and reporting system for Open Horizon services and nodes. The system will:
-- Run as a containerized Flask application
-- Support multiple CPU architectures (armhf, arm64, amd64, s390x, ppc64le, riscv)
-- Collect metrics from Open Horizon services and nodes running on the same host
-- Provide an API for retrieving accumulated statistics
-- Include Grafana integration for visualization
-- Follow a specific metrics schema for data consistency
+The Open Horizon Metrics project aims to provide a comprehensive metrics collection and visualization system for Open Horizon services and nodes. This system will help users monitor the health and performance of their Open Horizon deployments.
 
 ## Key Challenges and Analysis
-1. Multi-architecture Support
-   - Need to ensure Docker images work across all specified architectures
-   - May require different base images or build configurations for each architecture
-   - Need to test on each architecture to ensure compatibility
+1. Metrics Collection:
+   - Need to collect metrics from multiple services and nodes
+   - Handle different types of metrics (CPU, memory, network, disk)
+   - Ensure efficient storage and retrieval
+   - Handle potential service/node failures gracefully
 
-2. Metrics Collection
-   - Need to interface with Open Horizon's local services and nodes
-   - Must collect metrics independently from the API request process
-   - Need to implement efficient data storage for accumulated metrics
+2. API Design:
+   - RESTful API for metrics retrieval
+   - Support for filtering and pagination
+   - Proper error handling and validation
+   - Documentation using OpenAPI/Swagger
 
-3. API Design
-   - Must support retrieval of both latest and historical data points
-   - Need to ensure API endpoints match the specified metrics schema
-   - Should implement proper error handling and validation
-   - Must provide clear documentation for API consumers
-
-4. Grafana Integration
-   - Need to create appropriate data source configuration
-   - Must design dashboards that effectively visualize the metrics
-   - Should ensure proper data refresh and update mechanisms
-
-5. Documentation
-   - Need to provide clear API usage examples
-   - Must document data schema and response formats
-   - Should include troubleshooting guides
-   - Need to provide integration examples for common use cases
+3. Grafana Integration:
+   - Create Grafana data source plugin
+   - Design dashboard templates
+   - Support for time-series visualization
+   - Handle authentication and security
 
 ## High-level Task Breakdown
-1. Project Setup and Infrastructure
-   - [ ] Create project repository structure
-   - [ ] Set up Docker multi-architecture build environment
-   - [ ] Create initial Dockerfile with multi-arch support
-   - [ ] Set up development environment and dependencies
 
-2. Metrics Collection System
-   - [ ] Implement Open Horizon service metrics collector
-   - [ ] Implement node metrics collector
-   - [ ] Create data storage mechanism for accumulated metrics
-   - [ ] Implement background collection process
+### Phase 1: Metrics Collection System
+- [x] Set up project structure
+- [x] Create database models
+- [x] Implement metrics collectors
+- [x] Create collection manager
+- [x] Add configuration management
+- [x] Implement error handling
+- [x] Add logging
 
-3. API Development
-   - [ ] Design and implement API endpoints
-   - [ ] Implement data retrieval mechanisms
-   - [ ] Add validation and error handling
-   - [ ] Create API documentation
-   - [ ] Implement OpenAPI/Swagger specification
-   - [ ] Create example API requests and responses
+### Phase 2: API Implementation
+- [x] Create API namespace
+- [x] Implement service metrics endpoints
+- [x] Implement node metrics endpoints
+- [x] Add filtering and pagination
+- [x] Implement error handling
+- [x] Add API documentation
+- [x] Write API tests
 
-4. Documentation
-   - [ ] Create API Reference Guide
-     - [ ] Endpoint descriptions
-     - [ ] Request/response formats
-     - [ ] Authentication requirements
-     - [ ] Rate limiting information
-   - [ ] Create Integration Guide
-     - [ ] Common use cases
-     - [ ] Code examples in multiple languages
-     - [ ] Best practices
-   - [ ] Create Troubleshooting Guide
-     - [ ] Common issues and solutions
-     - [ ] Debug logging information
-     - [ ] Performance optimization tips
-   - [ ] Create Data Schema Documentation
-     - [ ] Detailed field descriptions
-     - [ ] Data types and formats
-     - [ ] Example data structures
-
-5. Grafana Integration
-   - [ ] Create Grafana data source configuration
-   - [ ] Design and implement example dashboards
-   - [ ] Document Grafana setup and usage
-   - [ ] Create dashboard configuration guide
-
-6. Testing and Validation
-   - [ ] Create unit tests for metrics collection
-   - [ ] Create integration tests for API endpoints
-   - [ ] Test on all supported architectures
-   - [ ] Validate against metrics schema
-   - [ ] Test documentation examples
+### Phase 3: Grafana Integration
+- [ ] Create Grafana data source plugin
+  - [ ] Set up plugin development environment
+  - [ ] Implement data source backend
+  - [ ] Add authentication support
+  - [ ] Create query editor
+  - [ ] Add variable support
+  - [ ] Write plugin tests
+- [ ] Design dashboard templates
+  - [ ] Create service overview dashboard
+  - [ ] Create node overview dashboard
+  - [ ] Add alerting rules
+  - [ ] Create documentation
 
 ## Project Status Board
-- [ ] Initial project setup
-- [ ] Define project requirements
-- [ ] Create implementation plan
-- [ ] Set up development environment
-- [ ] Create Dockerfile with multi-arch support
-- [ ] Implement metrics collection system
-- [ ] Develop API endpoints
-- [ ] Create API documentation
-- [ ] Create integration guides
-- [ ] Create Grafana integration
-- [ ] Complete testing and validation
+- [x] Project setup and structure
+- [x] Database models implementation
+- [x] Metrics collectors implementation
+- [x] Collection manager implementation
+- [x] API endpoints implementation
+- [x] API tests implementation
+- [ ] Grafana data source plugin
+- [ ] Dashboard templates
 
 ## Executor's Feedback or Assistance Requests
-[To be filled during execution]
+Ready to proceed with Grafana integration. Will start with creating the data source plugin.
 
 ## Lessons
 - Include info useful for debugging in the program output
 - Read the file before you try to edit it
 - If there are vulnerabilities that appear in the terminal, run npm audit before proceeding
 - Always ask before using the -force git command
-- When working with multi-arch Docker builds, ensure all dependencies are compatible with each architecture
-- Test metrics collection thoroughly to ensure accurate data gathering
-- Implement proper error handling for API endpoints
-- Document all configuration options for Grafana integration
-- Keep API documentation in sync with code changes
-- Include practical examples in documentation
-- Document all possible error responses and their meanings 
+- Use proper error handling and validation in API endpoints
+- Implement comprehensive test coverage
+- Document API endpoints using OpenAPI/Swagger
+- Use environment variables for configuration
+- Implement proper logging for debugging
+- Use SQLAlchemy for database operations
+- Implement proper database session management
+- Use pytest fixtures for testing
+- Implement proper CORS support
+- Use flask-restx for API development
+- Implement proper pagination and filtering
+- Use proper datetime handling for time-based queries 

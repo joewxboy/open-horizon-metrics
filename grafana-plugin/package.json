@@ -1,0 +1,26 @@
+{
+  "name": "openhorizon-metrics-datasource",
+  "version": "1.0.0",
+  "description": "Open Horizon Metrics data source for Grafana",
+  "scripts": {
+    "build": "grafana-toolkit plugin:build",
+    "test": "grafana-toolkit plugin:test",
+    "dev": "grafana-toolkit plugin:dev",
+    "watch": "grafana-toolkit plugin:dev --watch"
+  },
+  "author": "Open Horizon Team",
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "@grafana/data": "^10.0.0",
+    "@grafana/toolkit": "^10.0.0",
+    "@grafana/ui": "^10.0.0",
+    "@grafana/runtime": "^10.0.0",
+    "@grafana/schema": "^10.0.0",
+    "@grafana/tsconfig": "^10.0.0",
+    "@types/react": "^18.0.0",
+    "@types/react-dom": "^18.0.0",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
+    "typescript": "^5.0.0"
+  }
+}
