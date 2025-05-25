@@ -24,7 +24,7 @@ export interface OpenHorizonDataSourceOptions extends DataSourceJsonData {
 
 interface MetricPoint {
   timestamp: string;
-  [key: string]: any;
+  [key: string]: number | string;
 }
 
 export class DataSource extends DataSourceApi<OpenHorizonQuery, OpenHorizonDataSourceOptions> {
@@ -63,29 +63,29 @@ export class DataSource extends DataSourceApi<OpenHorizonQuery, OpenHorizonDataS
       : `${this.url}/nodes/${target.nodeId}/metrics`;
 
     const params = new URLSearchParams();
-    if (from) params.append('start_time', from);
-    if (to) params.append('end_time', to);
-    if (target.limit) params.append('limit', target.limit.toString());
+    if (from) { params.append('start_time', from); }
+    if (to) { params.append('end_time', to); }
+    if (target.limit) { params.append('limit', target.limit.toString()); }
 
     return `${baseUrl}?${params.toString()}`;
   }
 
   private async doRequest(query: string) {
     try {
-      const response = await getBackendSrv().datasourceRequest({
+      const result = await getBackendSrv().datasourceRequest({
         url: query,
         method: 'GET',
       });
-      return response.data;
-    } catch (error) {
-      console.error('Error fetching data:', error);
-      throw error;
+      return result.data;
+    } catch (err) {
+      console.error('Error fetching data:', err);
+      throw err;
     }
   }
 
   async testDatasource() {
     try {
-      const response = await getBackendSrv().datasourceRequest({
+      await getBackendSrv().datasourceRequest({
         url: `${this.url}/health`,
         method: 'GET',
       });
@@ -93,7 +93,7 @@ export class DataSource extends DataSourceApi<OpenHorizonQuery, OpenHorizonDataS
         status: 'success',
         message: 'Data source is working',
       };
-    } catch (error) {
+    } catch {
       return {
         status: 'error',
         message: 'Error connecting to data source',

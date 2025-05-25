@@ -1,73 +1,57 @@
 # Open Horizon Metrics Project
 
 ## Background and Motivation
-The Open Horizon Metrics project aims to provide a comprehensive metrics collection and visualization system for Open Horizon services and nodes. This system will help users monitor the health and performance of their Open Horizon deployments.
+The Open Horizon Metrics project aims to collect, store, and visualize metrics from Open Horizon services and nodes. This project will provide a robust API for retrieving metrics and integrate with Grafana for visualization.
 
 ## Key Challenges and Analysis
-1. Metrics Collection:
-   - Need to collect metrics from multiple services and nodes
-   - Handle different types of metrics (CPU, memory, network, disk)
-   - Ensure efficient storage and retrieval
-   - Handle potential service/node failures gracefully
-
-2. API Design:
-   - RESTful API for metrics retrieval
-   - Support for filtering and pagination
-   - Proper error handling and validation
-   - Documentation using OpenAPI/Swagger
-
-3. Grafana Integration:
-   - Create Grafana data source plugin
-   - Design dashboard templates
-   - Support for time-series visualization
-   - Handle authentication and security
+- **Metrics Collection:** Efficiently collect metrics from Open Horizon services and nodes.
+- **API Design:** Design a RESTful API to expose metrics data.
+- **Grafana Integration:** Create a Grafana data source plugin to visualize metrics.
 
 ## High-level Task Breakdown
+1. **Phase 1: Metrics Collection**
+   - [x] Set up project structure
+   - [x] Implement metrics collection system
+   - [x] Create database models
+   - [x] Implement API endpoints
+   - [x] Create tests
 
-### Phase 1: Metrics Collection System
-- [x] Set up project structure
-- [x] Create database models
-- [x] Implement metrics collectors
-- [x] Create collection manager
-- [x] Add configuration management
-- [x] Implement error handling
-- [x] Add logging
+2. **Phase 2: API Implementation**
+   - [x] Implement API endpoints for metrics retrieval
+   - [x] Add pagination and filtering
+   - [x] Implement health check endpoint
 
-### Phase 2: API Implementation
-- [x] Create API namespace
-- [x] Implement service metrics endpoints
-- [x] Implement node metrics endpoints
-- [x] Add filtering and pagination
-- [x] Implement error handling
-- [x] Add API documentation
-- [x] Write API tests
-
-### Phase 3: Grafana Integration
-- [ ] Create Grafana data source plugin
-  - [ ] Set up plugin development environment
-  - [ ] Implement data source backend
-  - [ ] Add authentication support
-  - [ ] Create query editor
-  - [ ] Add variable support
-  - [ ] Write plugin tests
-- [ ] Design dashboard templates
-  - [ ] Create service overview dashboard
-  - [ ] Create node overview dashboard
-  - [ ] Add alerting rules
-  - [ ] Create documentation
+3. **Phase 3: Grafana Integration**
+   - [x] Implement Grafana data source plugin
+   - [ ] Test Grafana plugin integration
+   - [ ] Create documentation
+   - [ ] Set up CI/CD pipeline
+   - [ ] Create example dashboards
 
 ## Project Status Board
-- [x] Project setup and structure
-- [x] Database models implementation
-- [x] Metrics collectors implementation
-- [x] Collection manager implementation
-- [x] API endpoints implementation
-- [x] API tests implementation
-- [ ] Grafana data source plugin
-- [ ] Dashboard templates
+- [x] Set up project structure
+- [x] Implement metrics collection system
+- [x] Create database models
+- [x] Implement API endpoints
+- [x] Create tests
+- [x] Implement Grafana data source plugin
+- [ ] Test Grafana plugin integration
+- [ ] Create documentation
+- [ ] Set up CI/CD pipeline
+- [ ] Create example dashboards
+
+## Current Status / Progress Tracking
+- The Grafana data source plugin has been successfully implemented and built.
+- Next steps involve testing the plugin integration with the metrics API, creating documentation, and setting up a CI/CD pipeline.
 
 ## Executor's Feedback or Assistance Requests
-Ready to proceed with Grafana integration. Will start with creating the data source plugin.
+- Ready to proceed with testing the Grafana plugin integration.
+
+## Lessons
+- Include info useful for debugging in the program output.
+- Read the file before you try to edit it.
+- If there are vulnerabilities that appear in the terminal, run npm audit before proceeding.
+- Always ask before using the -force git command.
 
 ## Lessons
 - Include info useful for debugging in the program output

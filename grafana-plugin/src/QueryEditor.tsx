@@ -36,7 +36,7 @@ export function QueryEditor({ query, onChange, onRunQuery }: Props) {
       try {
         const response = await fetch('/api/datasources/proxy/1/services');
         const data = await response.json();
-        setServices(data.map((service: any) => ({
+        setServices(data.map((service: { service_name: string }) => ({
           label: service.service_name,
           value: service.service_name,
         })));
@@ -49,7 +49,7 @@ export function QueryEditor({ query, onChange, onRunQuery }: Props) {
       try {
         const response = await fetch('/api/datasources/proxy/1/nodes');
         const data = await response.json();
-        setNodes(data.map((node: any) => ({
+        setNodes(data.map((node: { node_id: string }) => ({
           label: node.node_id,
           value: node.node_id,
         })));
