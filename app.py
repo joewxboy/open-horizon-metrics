@@ -13,8 +13,8 @@ load_dotenv()
 app = Flask(__name__)
 CORS(app)
 
-# Initialize API
-api.init_app(app)
+# Initialize API with proper configuration
+api.init_app(app, prefix='/api')
 
 # Create database tables
 Base.metadata.create_all(bind=engine)

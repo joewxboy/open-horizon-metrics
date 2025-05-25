@@ -4,7 +4,9 @@ from flask_restx import fields, Api
 api = Api(
     title='Open Horizon Metrics API',
     version='1.0',
-    description='API for retrieving Open Horizon service and node metrics'
+    description='API for retrieving Open Horizon service and node metrics',
+    doc='/docs',  # Set the documentation URL
+    prefix='/api'  # Add API prefix for better organization
 )
 
 # Common fields
