@@ -109,26 +109,22 @@ error_model = api.model('Error', {
     )
 })
 
-# Query parameters
+# Define query parameters for metrics endpoints
 metrics_query_params = {
     'limit': {
         'type': int,
-        'help': 'Number of records to return (default: 1, max: 100)',
-        'default': 1
-    },
-    'offset': {
-        'type': int,
-        'help': 'Number of records to skip (default: 0)',
-        'default': 0
+        'default': 100,
+        'help': 'Number of records to return',
+        'location': 'args'
     },
     'start_time': {
         'type': str,
-        'help': 'Start time in ISO 8601 format (YYYY-MM-DDTHH:MM:SSZ)',
-        'example': '2024-02-20T00:00:00Z'
+        'help': 'Start time in ISO 8601 format (e.g., 2024-02-20T00:00:00Z)',
+        'location': 'args'
     },
     'end_time': {
         'type': str,
-        'help': 'End time in ISO 8601 format (YYYY-MM-DDTHH:MM:SSZ)',
-        'example': '2024-02-20T23:59:59Z'
+        'help': 'End time in ISO 8601 format (e.g., 2024-02-20T23:59:59Z)',
+        'location': 'args'
     }
 } 

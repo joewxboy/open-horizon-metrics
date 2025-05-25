@@ -52,6 +52,7 @@ def sample_metrics(db_session):
     )
     db_session.add(node_metrics)
     db_session.commit()
+    return service_metrics, node_metrics
 
 def test_health_endpoint(client):
     """Test the health check endpoint."""
@@ -95,6 +96,11 @@ def test_list_nodes(client, sample_metrics):
 
 def test_metrics_not_found(client, sample_metrics):
     """Test getting metrics for non-existent service/node."""
+    # Ensure sample metrics are in the database
+    service_metrics, node_metrics = sample_metrics
+    assert service_metrics is not None
+    assert node_metrics is not None
+
     response = client.get('/api/services/nonexistent/metrics')
     assert response.status_code == 404
     assert response.json['error'] == 'No metrics found for service nonexistent'

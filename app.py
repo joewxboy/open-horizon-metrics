@@ -38,5 +38,12 @@ def initialize_metrics_collection():
         app._metrics_initialized = True
 
 if __name__ == '__main__':
+    import sys
     port = int(os.getenv('PORT', 5000))
+    # Allow specifying port via command-line argument
+    if len(sys.argv) > 1:
+        try:
+            port = int(sys.argv[1])
+        except ValueError:
+            print(f"Invalid port argument: {sys.argv[1]}. Using default port {port}.")
     app.run(host='0.0.0.0', port=port) 
