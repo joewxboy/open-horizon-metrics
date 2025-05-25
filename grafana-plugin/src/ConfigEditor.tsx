@@ -25,4 +25,4 @@ export function ConfigEditor({ options, onOptionsChange }: Props) {
       </InlineField>
     </div>
   );
-} 
+}

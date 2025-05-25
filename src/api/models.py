@@ -13,6 +13,17 @@ api = Api(
     - Filter metrics by time range
     - Paginate results
     
+    **Authentication:** Not required. All endpoints are open for use without restriction.
+    **Rate Limiting:** Not implemented. All endpoints are open for use without restriction.
+    **Error Handling:** All endpoints return a JSON error object with an `error` field and a descriptive message for 400/404 errors.
+    **Environment Configuration:**
+      - `DATABASE_URL`: Database connection string (SQLite/PostgreSQL)
+      - `API_HOST`: Host for the API server (default: 0.0.0.0)
+      - `API_PORT`: Port for the API server (default: 5000)
+      - `LOG_LEVEL`: Logging level (default: INFO)
+      - `CORS_ORIGINS`: Allowed CORS origins (default: *)
+      - `GRAFANA_API_KEY`: (Optional) API key for Grafana integration
+    
     All timestamps are in ISO 8601 format (YYYY-MM-DDTHH:MM:SSZ).
     ''',
     doc='/api/docs',  # Set the documentation URL to match the API prefix

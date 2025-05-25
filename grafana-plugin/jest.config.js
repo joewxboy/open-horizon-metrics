@@ -5,4 +5,22 @@
 const standard = require('@grafana/toolkit/src/config/jest.plugin.config');
 
 // This process will use the same config that `yarn test` is using
-module.exports = standard.jestConfig();
+module.exports = {
+  transform: {
+    '^.+\\.(ts|tsx)$': 'ts-jest',
+  },
+  testEnvironment: 'node',
+  moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
+  transformIgnorePatterns: [
+    'node_modules/(?!(ol|@grafana)/)',
+  ],
+  moduleNameMapper: {
+    '^@grafana/(.*)$': '<rootDir>/node_modules/@grafana/$1',
+  },
+  testMatch: ['**/__tests__/**/*.test.(ts|tsx)'],
+  globals: {
+    'ts-jest': {
+      tsconfig: 'tsconfig.json',
+    },
+  },
+};

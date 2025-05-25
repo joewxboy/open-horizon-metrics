@@ -238,3 +238,10 @@ class NodesResource(Resource):
         db = next(get_db())
         nodes = db.query(NodeMetrics.node_id).distinct().all()
         return [{'node_id': node[0]} for node in nodes]
+
+@api.route('/health')
+@api.doc(tags=['health'], description='Health check endpoint. Returns API status.', responses={200: 'API is healthy'})
+class HealthResource(Resource):
+    def get(self):
+        """Health check endpoint."""
+        return {'status': 'healthy'}, 200

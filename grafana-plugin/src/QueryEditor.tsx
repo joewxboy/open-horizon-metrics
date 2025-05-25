@@ -36,10 +36,12 @@ export function QueryEditor({ query, onChange, onRunQuery }: Props) {
       try {
         const response = await fetch('/api/datasources/proxy/1/services');
         const data = await response.json();
-        setServices(data.map((service: { service_name: string }) => ({
-          label: service.service_name,
-          value: service.service_name,
-        })));
+        setServices(
+          data.map((service: { service_name: string }) => ({
+            label: service.service_name,
+            value: service.service_name,
+          }))
+        );
       } catch (error) {
         console.error('Error fetching services:', error);
       }
@@ -49,10 +51,12 @@ export function QueryEditor({ query, onChange, onRunQuery }: Props) {
       try {
         const response = await fetch('/api/datasources/proxy/1/nodes');
         const data = await response.json();
-        setNodes(data.map((node: { node_id: string }) => ({
-          label: node.node_id,
-          value: node.node_id,
-        })));
+        setNodes(
+          data.map((node: { node_id: string }) => ({
+            label: node.node_id,
+            value: node.node_id,
+          }))
+        );
       } catch (error) {
         console.error('Error fetching nodes:', error);
       }
@@ -164,4 +168,4 @@ export function QueryEditor({ query, onChange, onRunQuery }: Props) {
       </InlineFieldRow>
     </div>
   );
-} 
+}
