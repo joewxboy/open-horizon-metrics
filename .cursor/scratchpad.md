@@ -51,8 +51,8 @@ The Open Horizon Metrics project aims to collect, store, and visualize metrics f
 - [x] Fix API documentation access
 - [x] Set up basic OpenAPI/Swagger documentation
 - [ ] Test Grafana plugin integration
-- [ ] Create documentation
-- [ ] Set up CI/CD pipeline
+- [x] Create documentation
+- [ ] Set up CI/CD pipeline (skipped)
 - [ ] Create example dashboards
 - [ ] Enhance API documentation
 
@@ -65,11 +65,17 @@ The Open Horizon Metrics project aims to collect, store, and visualize metrics f
   - Parameter descriptions
   - Error responses
   - API tags for better organization
-- Next steps involve testing the Grafana plugin integration, creating documentation, and setting up a CI/CD pipeline.
+- Comprehensive project documentation has been created, including:
+  - Detailed README with setup instructions
+  - Configuration guide
+  - API usage examples
+  - Metrics data description
+- CI/CD pipeline setup has been skipped as requested.
+- Next steps involve creating example dashboards for Grafana visualization.
 
 ## Executor's Feedback or Assistance Requests
-- API documentation has been enhanced with comprehensive OpenAPI/Swagger documentation.
-- Ready to proceed with testing the Grafana plugin integration.
+- Project documentation has been enhanced with comprehensive guides and examples.
+- Ready to proceed with creating example dashboards for Grafana visualization.
 
 ## Lessons
 - Include info useful for debugging in the program output
