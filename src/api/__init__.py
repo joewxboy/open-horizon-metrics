@@ -1,20 +1,15 @@
-from flask_restx import Api, Resource
+from flask_restx import Resource
 from flask import request
 from datetime import datetime
 from sqlalchemy import desc
 from ..utils.database import get_db
 from ..utils.models import ServiceMetrics, NodeMetrics
 from .models import (
+    api,
     service_metrics_model,
     node_metrics_model,
     error_model,
     metrics_query_params
-)
-
-api = Api(
-    title='Open Horizon Metrics API',
-    version='1.0',
-    description='API for retrieving Open Horizon service and node metrics'
 )
 
 @api.route('/services/<string:service_name>/metrics')

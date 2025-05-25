@@ -17,6 +17,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 # Create non-root user
 RUN useradd -m -u 1000 appuser
+RUN addgroup --system appgroup && adduser --system --ingroup appgroup appuser
 
 # Final stage
 FROM --platform=$TARGETPLATFORM python:3.11-slim
@@ -32,7 +33,10 @@ COPY --from=builder /usr/local/bin/ /usr/local/bin/
 COPY . .
 
 # Switch to non-root user
-USER appuser
+RUN useradd -m -u 1000 appuser
+RUN addgroup --system appgroup && adduser --system --ingroup appgroup appuser
+USER appuser:appgroup
+
 
 # Expose port
 EXPOSE 5000

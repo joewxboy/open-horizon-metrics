@@ -1,5 +1,11 @@
-from flask_restx import fields
-from . import api
+from flask_restx import fields, Api
+
+# Create API instance
+api = Api(
+    title='Open Horizon Metrics API',
+    version='1.0',
+    description='API for retrieving Open Horizon service and node metrics'
+)
 
 # Common fields
 timestamp_field = fields.DateTime(description='Timestamp of the metrics')
