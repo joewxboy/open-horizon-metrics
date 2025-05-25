@@ -12,6 +12,40 @@ from .models import (
     metrics_query_params
 )
 
+# Define query parameters for metrics endpoints
+metrics_query_params = {
+    'limit': {
+        'type': int,
+        'default': 100,
+        'help': 'Number of records to return',
+        'location': 'args'
+    },
+    'offset': {
+        'type': int,
+        'default': 0,
+        'help': 'Number of records to skip',
+        'location': 'args'
+    },
+    'start_time': {
+        'type': str,
+        'help': 'Start time in ISO 8601 format (e.g., 2024-02-20T00:00:00Z)',
+        'location': 'args'
+    },
+    'end_time': {
+        'type': str,
+        'help': 'End time in ISO 8601 format (e.g., 2024-02-20T23:59:59Z)',
+        'location': 'args'
+    }
+}
+
+# Define API documentation parameters
+api_doc_params = {
+    'limit': {'description': 'Number of records to return (default: 100)', 'type': 'integer', 'default': 100, 'example': 5},
+    'offset': {'description': 'Number of records to skip (default: 0)', 'type': 'integer', 'default': 0, 'example': 0},
+    'start_time': {'description': 'Start time in ISO 8601 format', 'type': 'string', 'example': '2024-02-20T00:00:00Z'},
+    'end_time': {'description': 'End time in ISO 8601 format', 'type': 'string', 'example': '2024-02-20T23:59:59Z'}
+}
+
 # Create request parser for query parameters
 parser = reqparse.RequestParser()
 for param, config in metrics_query_params.items():
@@ -27,10 +61,10 @@ api_tags = {
 @api.param('service_name', 'Name of the service to get metrics for')
 @api.response(404, 'Service not found', error_model)
 @api.response(400, 'Invalid request', error_model)
-@api.tag('services')
+@api.doc(tags=['services'])
 class ServiceMetricsResource(Resource):
     @api.doc('get_service_metrics',
-             params=metrics_query_params,
+             params=api_doc_params,
              description='''Get metrics for a specific service. Supports pagination and time-based filtering.\n\n**Authentication:** Not required.\n**Rate Limiting:** Not implemented.''',
              responses={
                  200: ('Success', [service_metrics_model]),
@@ -79,7 +113,8 @@ class ServiceMetricsResource(Resource):
         
         # Apply pagination
         query = query.order_by(desc(ServiceMetrics.timestamp))
-        query = query.offset(args['offset']).limit(args['limit'])
+        offset = args.get('offset', 0)
+        query = query.offset(offset).limit(args['limit'])
         
         metrics = query.all()
         if not metrics:
@@ -91,10 +126,10 @@ class ServiceMetricsResource(Resource):
 @api.param('node_id', 'ID of the node to get metrics for')
 @api.response(404, 'Node not found', error_model)
 @api.response(400, 'Invalid request', error_model)
-@api.tag('nodes')
+@api.doc(tags=['nodes'])
 class NodeMetricsResource(Resource):
     @api.doc('get_node_metrics',
-             params=metrics_query_params,
+             params=api_doc_params,
              description='''Get metrics for a specific node. Supports pagination and time-based filtering.\n\n**Authentication:** Not required.\n**Rate Limiting:** Not implemented.''',
              responses={
                  200: ('Success', [node_metrics_model]),
@@ -143,7 +178,8 @@ class NodeMetricsResource(Resource):
         
         # Apply pagination
         query = query.order_by(desc(NodeMetrics.timestamp))
-        query = query.offset(args['offset']).limit(args['limit'])
+        offset = args.get('offset', 0)
+        query = query.offset(offset).limit(args['limit'])
         
         metrics = query.all()
         if not metrics:
@@ -152,7 +188,7 @@ class NodeMetricsResource(Resource):
         return metrics
 
 @api.route('/services')
-@api.tag('services')
+@api.doc(tags=['services'])
 class ServicesResource(Resource):
     @api.doc('list_services',
              description='''List all services that have metrics data.\n\n**Authentication:** Not required.\n**Rate Limiting:** Not implemented.''',
@@ -178,7 +214,7 @@ class ServicesResource(Resource):
         return [{'service_name': service[0]} for service in services]
 
 @api.route('/nodes')
-@api.tag('nodes')
+@api.doc(tags=['nodes'])
 class NodesResource(Resource):
     @api.doc('list_nodes',
              description='''List all nodes that have metrics data.\n\n**Authentication:** Not required.\n**Rate Limiting:** Not implemented.''',
