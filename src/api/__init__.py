@@ -17,14 +17,40 @@ parser = reqparse.RequestParser()
 for param, config in metrics_query_params.items():
     parser.add_argument(param, **config)
 
+# Define API tags
+api_tags = {
+    'services': 'Service metrics operations',
+    'nodes': 'Node metrics operations'
+}
+
 @api.route('/services/<string:service_name>/metrics')
-@api.param('service_name', 'Name of the service')
+@api.param('service_name', 'Name of the service to get metrics for')
 @api.response(404, 'Service not found', error_model)
+@api.tag('services')
 class ServiceMetricsResource(Resource):
-    @api.doc('get_service_metrics', params=metrics_query_params)
+    @api.doc('get_service_metrics',
+             params=metrics_query_params,
+             description='Get metrics for a specific service. Supports pagination and time-based filtering.',
+             responses={
+                 200: 'Success',
+                 404: 'Service not found'
+             },
+             example={
+                 'service_name': 'example-service',
+                 'cpu_usage': 45.5,
+                 'memory_usage': 60.2,
+                 'network_in': 1024.0,
+                 'network_out': 2048.0,
+                 'disk_usage': 75.0,
+                 'timestamp': '2024-02-20T12:00:00Z'
+             })
     @api.marshal_list_with(service_metrics_model)
     def get(self, service_name):
-        """Get metrics for a specific service."""
+        """Get metrics for a specific service.
+        
+        Returns a list of metrics for the specified service, ordered by timestamp.
+        Supports pagination and time-based filtering.
+        """
         args = parser.parse_args()
         db = next(get_db())
         
@@ -51,13 +77,33 @@ class ServiceMetricsResource(Resource):
         return metrics
 
 @api.route('/nodes/<string:node_id>/metrics')
-@api.param('node_id', 'ID of the node')
+@api.param('node_id', 'ID of the node to get metrics for')
 @api.response(404, 'Node not found', error_model)
+@api.tag('nodes')
 class NodeMetricsResource(Resource):
-    @api.doc('get_node_metrics', params=metrics_query_params)
+    @api.doc('get_node_metrics',
+             params=metrics_query_params,
+             description='Get metrics for a specific node. Supports pagination and time-based filtering.',
+             responses={
+                 200: 'Success',
+                 404: 'Node not found'
+             },
+             example={
+                 'node_id': 'node-1',
+                 'cpu_usage': 35.5,
+                 'memory_usage': 50.2,
+                 'network_in': 1536.0,
+                 'network_out': 3072.0,
+                 'disk_usage': 65.0,
+                 'timestamp': '2024-02-20T12:00:00Z'
+             })
     @api.marshal_list_with(node_metrics_model)
     def get(self, node_id):
-        """Get metrics for a specific node."""
+        """Get metrics for a specific node.
+        
+        Returns a list of metrics for the specified node, ordered by timestamp.
+        Supports pagination and time-based filtering.
+        """
         args = parser.parse_args()
         db = next(get_db())
         
@@ -84,21 +130,43 @@ class NodeMetricsResource(Resource):
         return metrics
 
 @api.route('/services')
+@api.tag('services')
 class ServicesResource(Resource):
-    @api.doc('list_services')
+    @api.doc('list_services',
+             description='List all services that have metrics data.',
+             responses={
+                 200: 'Success'
+             },
+             example=[{
+                 'service_name': 'example-service'
+             }])
     @api.marshal_list_with(service_metrics_model)
     def get(self):
-        """List all services with metrics."""
+        """List all services with metrics.
+        
+        Returns a list of all services that have metrics data in the system.
+        """
         db = next(get_db())
         services = db.query(ServiceMetrics.service_name).distinct().all()
         return [{'service_name': service[0]} for service in services]
 
 @api.route('/nodes')
+@api.tag('nodes')
 class NodesResource(Resource):
-    @api.doc('list_nodes')
+    @api.doc('list_nodes',
+             description='List all nodes that have metrics data.',
+             responses={
+                 200: 'Success'
+             },
+             example=[{
+                 'node_id': 'node-1'
+             }])
     @api.marshal_list_with(node_metrics_model)
     def get(self):
-        """List all nodes with metrics."""
+        """List all nodes with metrics.
+        
+        Returns a list of all nodes that have metrics data in the system.
+        """
         db = next(get_db())
         nodes = db.query(NodeMetrics.node_id).distinct().all()
         return [{'node_id': node[0]} for node in nodes]

@@ -48,8 +48,8 @@ The Open Horizon Metrics project aims to collect, store, and visualize metrics f
 - [x] Implement API endpoints
 - [x] Create tests
 - [x] Implement Grafana data source plugin
-- [ ] Fix API documentation access
-- [ ] Set up basic OpenAPI/Swagger documentation
+- [x] Fix API documentation access
+- [x] Set up basic OpenAPI/Swagger documentation
 - [ ] Test Grafana plugin integration
 - [ ] Create documentation
 - [ ] Set up CI/CD pipeline
@@ -58,12 +58,18 @@ The Open Horizon Metrics project aims to collect, store, and visualize metrics f
 
 ## Current Status / Progress Tracking
 - The Grafana data source plugin has been successfully implemented and built.
-- API documentation setup is incomplete - the `/docs` endpoint is not accessible.
-- Next steps involve fixing the API documentation access, enhancing API documentation, testing the plugin integration, creating documentation, and setting up a CI/CD pipeline.
+- API documentation access has been fixed - the documentation is now available at `/api/docs`.
+- Basic OpenAPI/Swagger documentation has been set up with:
+  - Detailed endpoint descriptions
+  - Request/response examples
+  - Parameter descriptions
+  - Error responses
+  - API tags for better organization
+- Next steps involve testing the Grafana plugin integration, creating documentation, and setting up a CI/CD pipeline.
 
 ## Executor's Feedback or Assistance Requests
-- Need to fix the API documentation access issue before proceeding with documentation enhancement.
-- The `/docs` endpoint is returning a 404 error, indicating the flask-restx documentation is not properly configured.
+- API documentation has been enhanced with comprehensive OpenAPI/Swagger documentation.
+- Ready to proceed with testing the Grafana plugin integration.
 
 ## Lessons
 - Include info useful for debugging in the program output

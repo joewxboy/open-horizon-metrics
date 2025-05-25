@@ -58,7 +58,7 @@ A Flask-based metrics collection and reporting system for Open Horizon services 
 
 ## API Documentation
 
-API documentation is available at `/docs` when running the application.
+API documentation is available at `/api/docs` when running the application.
 
 ## Contributing
 
