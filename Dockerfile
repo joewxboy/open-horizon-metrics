@@ -31,10 +31,13 @@ COPY --from=builder /usr/local/bin/ /usr/local/bin/
 # Copy application code
 COPY . .
 
-# Switch to non-root user
+# Create data directory and set permissions
 RUN useradd -m -u 1000 appuser
-USER appuser
+RUN mkdir -p /app/data && \
+    chown -R appuser:appuser /app
 
+# Switch to non-root user
+USER appuser
 
 # Expose port
 EXPOSE 5000
