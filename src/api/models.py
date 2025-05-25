@@ -43,8 +43,9 @@ error_model = api.model('Error', {
 })
 
 # Query parameters
-metrics_query_params = api.parser()
-metrics_query_params.add_argument('limit', type=int, help='Number of records to return', default=1)
-metrics_query_params.add_argument('offset', type=int, help='Number of records to skip', default=0)
-metrics_query_params.add_argument('start_time', type=str, help='Start time in ISO format')
-metrics_query_params.add_argument('end_time', type=str, help='End time in ISO format') 
+metrics_query_params = {
+    'limit': {'type': int, 'help': 'Number of records to return', 'default': 1},
+    'offset': {'type': int, 'help': 'Number of records to skip', 'default': 0},
+    'start_time': {'type': str, 'help': 'Start time in ISO format'},
+    'end_time': {'type': str, 'help': 'End time in ISO format'}
+} 
