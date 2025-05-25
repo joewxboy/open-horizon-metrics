@@ -1,4 +1,4 @@
-from flask_restx import Resource
+from flask_restx import Resource, reqparse
 from flask import request
 from datetime import datetime
 from sqlalchemy import desc
@@ -12,6 +12,11 @@ from .models import (
     metrics_query_params
 )
 
+# Create request parser for query parameters
+parser = reqparse.RequestParser()
+for param, config in metrics_query_params.items():
+    parser.add_argument(param, **config)
+
 @api.route('/services/<string:service_name>/metrics')
 @api.param('service_name', 'Name of the service')
 @api.response(404, 'Service not found', error_model)
@@ -20,7 +25,7 @@ class ServiceMetricsResource(Resource):
     @api.marshal_list_with(service_metrics_model)
     def get(self, service_name):
         """Get metrics for a specific service."""
-        args = metrics_query_params.parse_args()
+        args = parser.parse_args()
         db = next(get_db())
         
         query = db.query(ServiceMetrics).filter(
@@ -53,7 +58,7 @@ class NodeMetricsResource(Resource):
     @api.marshal_list_with(node_metrics_model)
     def get(self, node_id):
         """Get metrics for a specific node."""
-        args = metrics_query_params.parse_args()
+        args = parser.parse_args()
         db = next(get_db())
         
         query = db.query(NodeMetrics).filter(
