@@ -19,64 +19,105 @@ A Flask-based metrics collection and reporting system for Open Horizon services 
 - Open Horizon environment
 - SQLite (default) or PostgreSQL database
 
-## Quick Start
+## Getting Started
 
+### Docker (Recommended)
 1. Clone the repository:
    ```bash
    git clone https://github.com/joewxboy/open-horizon-metrics.git
    cd open-horizon-metrics
    ```
-
 2. Build the Docker image:
    ```bash
    docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7,linux/s390x,linux/ppc64le,linux/riscv64 -t open-horizon-metrics .
    ```
-
 3. Run the container:
    ```bash
-   docker run -p 5000:5000 open-horizon-metrics
+   docker run -p 5000:5000 --env-file .env open-horizon-metrics
    ```
-
 4. Test the health endpoint:
    ```bash
    curl http://localhost:5000/health
    ```
 
-## Development Setup
-
+### Local Development
 1. Create a virtual environment:
    ```bash
    python -m venv venv
    source venv/bin/activate  # On Windows: venv\Scripts\activate
    ```
-
 2. Install dependencies:
    ```bash
    pip install -r requirements.txt
    ```
-
 3. Run the development server:
    ```bash
    python app.py
    ```
 
-## Configuration
+## Grafana Integration
 
-The application can be configured using environment variables:
+1. Install the Open Horizon Metrics Grafana plugin (see plugin README for details).
+2. In Grafana, add a new data source and select "Open Horizon Metrics".
+3. Enter the API URL (e.g., `http://localhost:5000`).
+4. Click "Save & Test" to verify the connection.
+5. Import example dashboards from the `grafana-plugin/src/dashboards/` directory.
 
-| Variable | Description | Default |
-|----------|-------------|---------|
-| `DATABASE_URL` | Database connection URL | `sqlite:///data/metrics.db` |
-| `SERVICE_NAMES` | Comma-separated list of services to monitor | `''` |
-| `COLLECTION_INTERVAL` | Metrics collection interval in seconds | `60` |
-| `PORT` | Port to run the server on | `5000` |
+## Usage Guide
 
-Example `.env` file:
-```env
-DATABASE_URL=postgresql://user:password@localhost:5432/metrics
-SERVICE_NAMES=service1,service2,service3
+- Retrieve metrics for services and nodes with time-based filtering and pagination.
+- Example: Get latest metrics for a service
+  ```bash
+  curl http://localhost:5000/api/services/example-service/metrics
+  ```
+- Example: Get metrics for a node with time range and pagination
+  ```bash
+  curl "http://localhost:5000/api/nodes/node-1/metrics?start_time=2024-02-20T00:00:00Z&end_time=2024-02-20T23:59:59Z&limit=10&offset=0"
+  ```
+- Error Example:
+  ```bash
+  curl http://localhost:5000/api/services/invalid-service/metrics
+  # Response: { "error": "No metrics found for service invalid-service" }
+  ```
+
+### Best Practices
+- Use pagination (`limit` and `offset`) for large queries.
+- Use time filters (`start_time`, `end_time`) to reduce data volume.
+- Monitor the `/health` endpoint for service status.
+- Secure your deployment (e.g., restrict CORS origins, use secure database credentials).
+- Review logs for troubleshooting (`LOG_LEVEL` environment variable).
+
+### Troubleshooting
+- **No data returned:** Check that metrics are being collected and the database is populated.
+- **API not reachable:** Ensure the container/server is running and the correct port is exposed.
+- **Grafana cannot connect:** Verify the API URL and network connectivity.
+- **CORS errors:** Set `CORS_ORIGINS` to allow requests from your Grafana instance.
+
+## Environment Configuration
+
+The application can be configured using the following environment variables:
+
+| Variable Name         | Description                                      | Default / Example                | Required | Impact |
+|----------------------|--------------------------------------------------|----------------------------------|----------|--------|
+| `DATABASE_URL`       | Database connection string (SQLite/PostgreSQL)   | `sqlite:///data/metrics.db`      | Yes      | Determines where metrics are stored |
+| `API_HOST`           | Host for the API server                          | `0.0.0.0`                        | No       | Controls which network interfaces the API binds to |
+| `API_PORT`           | Port for the API server                          | `5000`                           | No       | Port for HTTP requests |
+| `LOG_LEVEL`          | Logging level                                    | `INFO`                           | No       | Controls verbosity of logs |
+| `CORS_ORIGINS`       | Allowed CORS origins (comma-separated)           | `*`                              | No       | Controls which origins can access the API |
+| `GRAFANA_API_KEY`    | (Optional) API key for Grafana integration       |                                  | No       | Used for secure Grafana integration (future) |
+| `SERVICE_NAMES`      | Comma-separated list of services to monitor       | `''`                             | No       | Limits metrics collection to specific services |
+| `COLLECTION_INTERVAL`| Metrics collection interval in seconds            | `60`                             | No       | Frequency of metrics collection |
+| `PORT`               | Port to run the server on (legacy, use API_PORT) | `5000`                           | No       | Backward compatibility |
+
+**Example `.env` file:**
+```
+DATABASE_URL=sqlite:///data/metrics.db
+API_HOST=0.0.0.0
+API_PORT=5000
+LOG_LEVEL=INFO
+CORS_ORIGINS=*
+SERVICE_NAMES=service1,service2
 COLLECTION_INTERVAL=30
-PORT=5000
 ```
 
 ## API Documentation
@@ -212,28 +253,6 @@ No authentication is required to access the API endpoints.
 ### Rate Limiting
 
 There is currently no rate limiting implemented. All endpoints are open for use without restriction.
-
-## Environment Variables
-
-The following environment variables can be used to configure the service:
-
-| Variable Name         | Description                                      | Example / Default                |
-|----------------------|--------------------------------------------------|----------------------------------|
-| `DATABASE_URL`       | Database connection string (SQLite/PostgreSQL)   | `sqlite:///data/metrics.db`      |
-| `API_HOST`           | Host for the API server                          | `0.0.0.0`                        |
-| `API_PORT`           | Port for the API server                          | `5000`                           |
-| `LOG_LEVEL`          | Logging level                                    | `INFO`                           |
-| `CORS_ORIGINS`       | Allowed CORS origins (comma-separated)           | `*`                              |
-| `GRAFANA_API_KEY`    | (Optional) API key for Grafana integration       |                                  |
-
-**Example `.env` file:**
-```
-DATABASE_URL=sqlite:///data/metrics.db
-API_HOST=0.0.0.0
-API_PORT=5000
-LOG_LEVEL=INFO
-CORS_ORIGINS=*
-```
 
 ## Contributing
 

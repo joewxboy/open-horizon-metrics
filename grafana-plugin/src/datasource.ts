@@ -47,8 +47,16 @@ export class DataSource extends DataSourceApi<OpenHorizonQuery, OpenHorizonDataS
       return new MutableDataFrame({
         refId: target.refId,
         fields: [
-          { name: 'Time', type: FieldType.time, values: (response as MetricPoint[]).map(point => new Date(point.timestamp).getTime()) },
-          { name: target.metric, type: FieldType.number, values: (response as MetricPoint[]).map(point => point[target.metric]) },
+          {
+            name: 'Time',
+            type: FieldType.time,
+            values: (response as MetricPoint[]).map((point) => new Date(point.timestamp).getTime()),
+          },
+          {
+            name: target.metric,
+            type: FieldType.number,
+            values: (response as MetricPoint[]).map((point) => point[target.metric]),
+          },
         ],
       });
     });
@@ -58,14 +66,21 @@ export class DataSource extends DataSourceApi<OpenHorizonQuery, OpenHorizonDataS
   }
 
   private buildQuery(target: OpenHorizonQuery, from?: string, to?: string): string {
-    const baseUrl = target.metricType === 'service' 
-      ? `${this.url}/services/${target.serviceName}/metrics`
-      : `${this.url}/nodes/${target.nodeId}/metrics`;
+    const baseUrl =
+      target.metricType === 'service'
+        ? `${this.url}/services/${target.serviceName}/metrics`
+        : `${this.url}/nodes/${target.nodeId}/metrics`;
 
     const params = new URLSearchParams();
-    if (from) { params.append('start_time', from); }
-    if (to) { params.append('end_time', to); }
-    if (target.limit) { params.append('limit', target.limit.toString()); }
+    if (from) {
+      params.append('start_time', from);
+    }
+    if (to) {
+      params.append('end_time', to);
+    }
+    if (target.limit) {
+      params.append('limit', target.limit.toString());
+    }
 
     return `${baseUrl}?${params.toString()}`;
   }
@@ -100,4 +115,4 @@ export class DataSource extends DataSourceApi<OpenHorizonQuery, OpenHorizonDataS
       };
     }
   }
-} 
+}
