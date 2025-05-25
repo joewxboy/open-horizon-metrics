@@ -29,10 +29,13 @@ def health_check():
     """Health check endpoint."""
     return jsonify({"status": "healthy"}), 200
 
-@app.before_first_request
-def start_metrics_collection():
-    """Start metrics collection when the first request is received."""
-    collection_manager.start()
+# Initialize metrics collection on first request
+@app.before_request
+def initialize_metrics_collection():
+    """Initialize metrics collection on first request."""
+    if not hasattr(app, '_metrics_initialized'):
+        collection_manager.start()
+        app._metrics_initialized = True
 
 if __name__ == '__main__':
     port = int(os.getenv('PORT', 5000))
