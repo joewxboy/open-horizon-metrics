@@ -14,13 +14,16 @@ def client():
 @pytest.fixture(scope="function")
 def db_session():
     """Create a fresh database for each test."""
-    Base.metadata.create_all(engine)
+    # Drop all tables and recreate them
+    Base.metadata.drop_all(bind=engine)
+    Base.metadata.create_all(bind=engine)
+    
     db = SessionLocal()
     try:
         yield db
     finally:
         db.close()
-        Base.metadata.drop_all(engine)
+        Base.metadata.drop_all(bind=engine)
 
 @pytest.fixture(scope="function")
 def sample_metrics(db_session):
@@ -58,7 +61,7 @@ def test_health_endpoint(client):
 
 def test_get_service_metrics(client, sample_metrics):
     """Test getting service metrics."""
-    response = client.get('/services/test_service/metrics')
+    response = client.get('/api/services/test_service/metrics')
     assert response.status_code == 200
     data = response.json
     assert len(data) == 1
@@ -67,7 +70,7 @@ def test_get_service_metrics(client, sample_metrics):
 
 def test_get_node_metrics(client, sample_metrics):
     """Test getting node metrics."""
-    response = client.get('/nodes/test_node/metrics')
+    response = client.get('/api/nodes/test_node/metrics')
     assert response.status_code == 200
     data = response.json
     assert len(data) == 1
@@ -76,7 +79,7 @@ def test_get_node_metrics(client, sample_metrics):
 
 def test_list_services(client, sample_metrics):
     """Test listing services."""
-    response = client.get('/services')
+    response = client.get('/api/services')
     assert response.status_code == 200
     data = response.json
     assert len(data) == 1
@@ -84,18 +87,18 @@ def test_list_services(client, sample_metrics):
 
 def test_list_nodes(client, sample_metrics):
     """Test listing nodes."""
-    response = client.get('/nodes')
+    response = client.get('/api/nodes')
     assert response.status_code == 200
     data = response.json
     assert len(data) == 1
     assert data[0]['node_id'] == "test_node"
 
-def test_metrics_not_found(client):
+def test_metrics_not_found(client, sample_metrics):
     """Test getting metrics for non-existent service/node."""
-    response = client.get('/services/nonexistent/metrics')
+    response = client.get('/api/services/nonexistent/metrics')
     assert response.status_code == 404
     assert response.json['error'] == 'No metrics found for service nonexistent'
 
-    response = client.get('/nodes/nonexistent/metrics')
+    response = client.get('/api/nodes/nonexistent/metrics')
     assert response.status_code == 404
     assert response.json['error'] == 'No metrics found for node nonexistent' 

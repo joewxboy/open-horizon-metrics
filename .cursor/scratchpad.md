@@ -7,6 +7,7 @@ The Open Horizon Metrics project aims to collect, store, and visualize metrics f
 - **Metrics Collection:** Efficiently collect metrics from Open Horizon services and nodes.
 - **API Design:** Design a RESTful API to expose metrics data.
 - **Grafana Integration:** Create a Grafana data source plugin to visualize metrics.
+- **API Documentation:** Ensure comprehensive and user-friendly API documentation.
 
 ## High-level Task Breakdown
 1. **Phase 1: Metrics Collection**
@@ -20,6 +21,8 @@ The Open Horizon Metrics project aims to collect, store, and visualize metrics f
    - [x] Implement API endpoints for metrics retrieval
    - [x] Add pagination and filtering
    - [x] Implement health check endpoint
+   - [ ] Fix API documentation access
+   - [ ] Set up OpenAPI/Swagger documentation
 
 3. **Phase 3: Grafana Integration**
    - [x] Implement Grafana data source plugin
@@ -28,6 +31,16 @@ The Open Horizon Metrics project aims to collect, store, and visualize metrics f
    - [ ] Set up CI/CD pipeline
    - [ ] Create example dashboards
 
+4. **Phase 4: API Documentation Enhancement**
+   - [ ] Review current API documentation
+   - [ ] Add detailed endpoint descriptions
+   - [ ] Include request/response examples
+   - [ ] Document error responses
+   - [ ] Add authentication requirements (if any)
+   - [ ] Create API usage guide
+   - [ ] Add rate limiting information
+   - [ ] Document environment variables
+
 ## Project Status Board
 - [x] Set up project structure
 - [x] Implement metrics collection system
@@ -35,23 +48,22 @@ The Open Horizon Metrics project aims to collect, store, and visualize metrics f
 - [x] Implement API endpoints
 - [x] Create tests
 - [x] Implement Grafana data source plugin
+- [ ] Fix API documentation access
+- [ ] Set up basic OpenAPI/Swagger documentation
 - [ ] Test Grafana plugin integration
 - [ ] Create documentation
 - [ ] Set up CI/CD pipeline
 - [ ] Create example dashboards
+- [ ] Enhance API documentation
 
 ## Current Status / Progress Tracking
 - The Grafana data source plugin has been successfully implemented and built.
-- Next steps involve testing the plugin integration with the metrics API, creating documentation, and setting up a CI/CD pipeline.
+- API documentation setup is incomplete - the `/docs` endpoint is not accessible.
+- Next steps involve fixing the API documentation access, enhancing API documentation, testing the plugin integration, creating documentation, and setting up a CI/CD pipeline.
 
 ## Executor's Feedback or Assistance Requests
-- Ready to proceed with testing the Grafana plugin integration.
-
-## Lessons
-- Include info useful for debugging in the program output.
-- Read the file before you try to edit it.
-- If there are vulnerabilities that appear in the terminal, run npm audit before proceeding.
-- Always ask before using the -force git command.
+- Need to fix the API documentation access issue before proceeding with documentation enhancement.
+- The `/docs` endpoint is returning a 404 error, indicating the flask-restx documentation is not properly configured.
 
 ## Lessons
 - Include info useful for debugging in the program output

@@ -13,8 +13,8 @@ os.makedirs(data_dir, exist_ok=True)
 # Get database URL from environment variable or use SQLite as default
 DATABASE_URL = os.getenv('DATABASE_URL', f'sqlite:///{os.path.join(data_dir, "metrics.db")}')
 
-# Create SQLAlchemy engine
-engine = create_engine(DATABASE_URL)
+# Create SQLAlchemy engine with echo=True for debugging
+engine = create_engine(DATABASE_URL, echo=True)
 
 # Create SessionLocal class
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
