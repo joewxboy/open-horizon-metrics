@@ -26,23 +26,31 @@ api_tags = {
 @api.route('/services/<string:service_name>/metrics')
 @api.param('service_name', 'Name of the service to get metrics for')
 @api.response(404, 'Service not found', error_model)
+@api.response(400, 'Invalid request', error_model)
 @api.tag('services')
 class ServiceMetricsResource(Resource):
     @api.doc('get_service_metrics',
              params=metrics_query_params,
-             description='Get metrics for a specific service. Supports pagination and time-based filtering.',
+             description='''Get metrics for a specific service. Supports pagination and time-based filtering.\n\n**Authentication:** Not required.\n**Rate Limiting:** Not implemented.''',
              responses={
-                 200: 'Success',
-                 404: 'Service not found'
+                 200: ('Success', [service_metrics_model]),
+                 400: ('Invalid request', error_model),
+                 404: ('Service not found', error_model)
              },
-             example={
-                 'service_name': 'example-service',
-                 'cpu_usage': 45.5,
-                 'memory_usage': 60.2,
-                 'network_in': 1024.0,
-                 'network_out': 2048.0,
-                 'disk_usage': 75.0,
-                 'timestamp': '2024-02-20T12:00:00Z'
+             examples={
+                 'application/json': [
+                     {
+                         'id': 1,
+                         'service_name': 'example-service',
+                         'timestamp': '2024-02-20T12:00:00Z',
+                         'cpu_usage': 45.5,
+                         'memory_usage': 60.2,
+                         'network_in': 1024.0,
+                         'network_out': 2048.0,
+                         'disk_usage': 75.0,
+                         'additional_metrics': {'custom_metric': 'value'}
+                     }
+                 ]
              })
     @api.marshal_list_with(service_metrics_model)
     def get(self, service_name):
@@ -50,6 +58,9 @@ class ServiceMetricsResource(Resource):
         
         Returns a list of metrics for the specified service, ordered by timestamp.
         Supports pagination and time-based filtering.
+        
+        **Authentication:** Not required.
+        **Rate Limiting:** Not implemented.
         """
         args = parser.parse_args()
         db = next(get_db())
@@ -79,23 +90,31 @@ class ServiceMetricsResource(Resource):
 @api.route('/nodes/<string:node_id>/metrics')
 @api.param('node_id', 'ID of the node to get metrics for')
 @api.response(404, 'Node not found', error_model)
+@api.response(400, 'Invalid request', error_model)
 @api.tag('nodes')
 class NodeMetricsResource(Resource):
     @api.doc('get_node_metrics',
              params=metrics_query_params,
-             description='Get metrics for a specific node. Supports pagination and time-based filtering.',
+             description='''Get metrics for a specific node. Supports pagination and time-based filtering.\n\n**Authentication:** Not required.\n**Rate Limiting:** Not implemented.''',
              responses={
-                 200: 'Success',
-                 404: 'Node not found'
+                 200: ('Success', [node_metrics_model]),
+                 400: ('Invalid request', error_model),
+                 404: ('Node not found', error_model)
              },
-             example={
-                 'node_id': 'node-1',
-                 'cpu_usage': 35.5,
-                 'memory_usage': 50.2,
-                 'network_in': 1536.0,
-                 'network_out': 3072.0,
-                 'disk_usage': 65.0,
-                 'timestamp': '2024-02-20T12:00:00Z'
+             examples={
+                 'application/json': [
+                     {
+                         'id': 1,
+                         'node_id': 'node-1',
+                         'timestamp': '2024-02-20T12:00:00Z',
+                         'cpu_usage': 35.5,
+                         'memory_usage': 50.2,
+                         'disk_usage': 65.0,
+                         'network_in': 1536.0,
+                         'network_out': 3072.0,
+                         'additional_metrics': {'custom_metric': 'value'}
+                     }
+                 ]
              })
     @api.marshal_list_with(node_metrics_model)
     def get(self, node_id):
@@ -103,6 +122,9 @@ class NodeMetricsResource(Resource):
         
         Returns a list of metrics for the specified node, ordered by timestamp.
         Supports pagination and time-based filtering.
+        
+        **Authentication:** Not required.
+        **Rate Limiting:** Not implemented.
         """
         args = parser.parse_args()
         db = next(get_db())
@@ -133,18 +155,23 @@ class NodeMetricsResource(Resource):
 @api.tag('services')
 class ServicesResource(Resource):
     @api.doc('list_services',
-             description='List all services that have metrics data.',
+             description='''List all services that have metrics data.\n\n**Authentication:** Not required.\n**Rate Limiting:** Not implemented.''',
              responses={
-                 200: 'Success'
+                 200: ('Success', [{'service_name': 'example-service'}])
              },
-             example=[{
-                 'service_name': 'example-service'
-             }])
+             examples={
+                 'application/json': [
+                     {'service_name': 'example-service'}
+                 ]
+             })
     @api.marshal_list_with(service_metrics_model)
     def get(self):
         """List all services with metrics.
         
         Returns a list of all services that have metrics data in the system.
+        
+        **Authentication:** Not required.
+        **Rate Limiting:** Not implemented.
         """
         db = next(get_db())
         services = db.query(ServiceMetrics.service_name).distinct().all()
@@ -154,18 +181,23 @@ class ServicesResource(Resource):
 @api.tag('nodes')
 class NodesResource(Resource):
     @api.doc('list_nodes',
-             description='List all nodes that have metrics data.',
+             description='''List all nodes that have metrics data.\n\n**Authentication:** Not required.\n**Rate Limiting:** Not implemented.''',
              responses={
-                 200: 'Success'
+                 200: ('Success', [{'node_id': 'node-1'}])
              },
-             example=[{
-                 'node_id': 'node-1'
-             }])
+             examples={
+                 'application/json': [
+                     {'node_id': 'node-1'}
+                 ]
+             })
     @api.marshal_list_with(node_metrics_model)
     def get(self):
         """List all nodes with metrics.
         
         Returns a list of all nodes that have metrics data in the system.
+        
+        **Authentication:** Not required.
+        **Rate Limiting:** Not implemented.
         """
         db = next(get_db())
         nodes = db.query(NodeMetrics.node_id).distinct().all()
